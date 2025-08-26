@@ -1,0 +1,109 @@
+/* Estilo para todo o corpo da página */
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding-top: 50px;
+    background-color: #e9ecef;
+    color: #343a40;
+}
+
+
+/* Estilo para a caixa principal da calculadora (aplicado a ambas as telas) */
+
+.container {
+    background-color: white;
+    width: 300px;
+    margin: auto;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Estilo para o título da página */
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+
+/* Estilo para os campos de entrada (Peso e Altura) */
+
+input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+
+/* Estilo para os botões */
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+
+/* Efeito quando o mouse passa por cima dos botões */
+
+button:hover {
+    background-color: #0056b3;
+}
+
+
+/* Estilo para a área de resultado */
+
+#resultado {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: white;
+}
+
+
+/* Cores dinâmicas para cada categoria de IMC */
+
+.abaixo-do-peso {
+    background-color: #ffc107;
+    color: #343a40;
+}
+
+.peso-normal {
+    background-color: #28a745;
+}
+
+.sobrepeso {
+    background-color: #fd7e14;
+}
+
+.obesidade-grau-i,
+.obesidade-grau-ii,
+.obesidade-grau-iii {
+    background-color: #dc3545;
+}
+
+
+/* Estilo para as opções "Sim" e "Não" */
+
+.opcoes-pergunta {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.opcoes-pergunta button {
+    width: 45%;
+}
