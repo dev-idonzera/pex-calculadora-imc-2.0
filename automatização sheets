@@ -1,0 +1,87 @@
+/**
+function criarDashboard() {
+  Logger.log('Iniciando a execução do script para criar o dashboard.');
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const formSheet = spreadsheet.getSheetByName('Respostas ao formulário 1');
+
+  if (!formSheet) {
+    Logger.log('ERRO: A aba de respostas do formulário não foi encontrada.');
+    throw new Error('A aba de respostas do formulário não foi encontrada.');
+  }
+
+  Logger.log('Aba de respostas do formulário encontrada.');
+
+  if (formSheet.getLastRow() < 2) {
+    Logger.log('Nenhum dado encontrado para processar.');
+    return;
+  }
+
+  const dataRange = formSheet.getRange('B2:C' + formSheet.getLastRow());
+  const data = dataRange.getValues();
+  Logger.log('Dados lidos da planilha: ' + JSON.stringify(data));
+
+  const colunaImc = data.map(row => parseFloat(String(row[0]).replace(',', '.')))
+                     .filter(value => !isNaN(value));
+
+  let simCount = 0;
+  let naoCount = 0;
+  data.forEach(row => {
+    if (row[1] === 'Sim') {
+      simCount++;
+    } else if (row[1] === 'Não') {
+      naoCount++;
+    }
+  });
+  Logger.log(`Contagem de 'Sim': ${simCount}, Contagem de 'Não': ${naoCount}`);
+
+  if (colunaImc.length === 0) {
+    Logger.log('Nenhum valor de IMC válido encontrado.');
+    return;
+  }
+
+  const mediaImc = colunaImc.reduce((sum, value) => sum + value, 0) / colunaImc.length;
+  Logger.log('Média do IMC calculada: ' + mediaImc);
+
+  const dashboardSheet = spreadsheet.getSheetByName('Dashboard');
+  if (dashboardSheet) {
+    spreadsheet.deleteSheet(dashboardSheet);
+  }
+
+  const newDashboard = spreadsheet.insertSheet('Dashboard');
+
+  newDashboard.getRange('A1').setValue('Média');
+  newDashboard.getRange('B1').setValue(mediaImc);
+
+  newDashboard.getRange('D1').setValue('Resposta');
+  newDashboard.getRange('E1').setValue('Contagem');
+  newDashboard.getRange('D2').setValue('Sim');
+  newDashboard.getRange('E2').setValue(simCount);
+  newDashboard.getRange('D3').setValue('Não');
+  newDashboard.getRange('E3').setValue(naoCount);
+
+  const imcChart = newDashboard.newChart()
+    .asColumnChart()
+    .addRange(newDashboard.getRange('A1:B1'))
+    .setOption('title', 'Média de IMC')
+    .setOption('legend.position', 'none')
+    .setOption('vAxes', { 0: { title: 'Valor' } })
+    .setOption('hAxes', { 0: { title: 'Métrica' } })
+    .setOption('width', 600)
+    .setOption('height', 400)
+    .setPosition(2, 2, 0, 0)
+    .build();
+
+  const respostasChart = newDashboard.newChart()
+    .asPieChart()
+    .addRange(newDashboard.getRange('D1:E3'))
+    .setOption('title', 'Contagem de Respostas')
+    .setOption('width', 600)
+    .setOption('height', 400)
+    .setPosition(2, 9, 0, 0) // Posiciona ao lado do primeiro gráfico
+    .build();
+
+  newDashboard.insertChart(imcChart);
+  newDashboard.insertChart(respostasChart);
+  Logger.log('Gráficos inseridos com sucesso.');
+}
+
